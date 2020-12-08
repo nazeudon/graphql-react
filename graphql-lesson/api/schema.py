@@ -1,6 +1,5 @@
 import graphene
-from graphene.types import interface
-from graphene_django.types import DjangoObjectType
+from graphene_django import DjangoObjectType
 from .models import Employee, Department
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene import relay
@@ -16,7 +15,7 @@ class EmployeeNode(DjangoObjectType):
             "join_year": ["exact", "icontains"],
             "department__dept_name": ["icontains"],
         }
-        interfaces = (relay.node,)
+        interfaces = (relay.Node,)
 
 
 class DepartmentNode(DjangoObjectType):
@@ -26,7 +25,7 @@ class DepartmentNode(DjangoObjectType):
             "employees": ["exact"],
             "dept_name": ["exact"],
         }
-        interfaces = (relay.node,)
+        interfaces = (relay.Node,)
 
 
 class DeptCreateMutation(relay.ClientIDMutation):
@@ -124,7 +123,7 @@ class Mutation(graphene.AbstractType):
 class Query(graphene.ObjectType):
     employee = graphene.Field(EmployeeNode, id=graphene.NonNull(graphene.ID))
     all_employees = DjangoFilterConnectionField(EmployeeNode)
-    all_departments = DjangoFilterConnectionField(Department)
+    all_departments = DjangoFilterConnectionField(DepartmentNode)
 
     @login_required
     def resolve_employee(self, info, **kwargs):
