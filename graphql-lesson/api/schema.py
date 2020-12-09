@@ -53,7 +53,7 @@ class DeptDeleteMutation(relay.ClientIDMutation):
         department = Department(id=from_global_id(input.get("id"))[1])
         department.delete()
 
-        return DeptCreateMutation(department=None)
+        return DeptDeleteMutation(department=None)
 
 
 class EmployeeCreateMutation(relay.ClientIDMutation):
@@ -113,7 +113,7 @@ class EmployeeDeleteMutation(relay.ClientIDMutation):
 
 class Mutation(graphene.AbstractType):
     create_dept = DeptCreateMutation.Field()
-    delte_dept = DeptDeleteMutation.Field()
+    delete_dept = DeptDeleteMutation.Field()
 
     create_employee = EmployeeCreateMutation.Field()
     update_employee = EmployeeUpdateMutation.Field()
